@@ -16,16 +16,15 @@ class CreateThreadsTest extends TestCase
     /** @test */
    public function guest_may_not_create_a_thread ()
     {
-        // We should expect an authenticated error exception
-        $this->expectException(AuthenticationException::class);
-        $this->withoutExceptionHandling();
 
-        // Given we have a thread
-       // $thread = factory(\App\Thread::class)->make();
-       $thread = make(\App\Thread::class);
+        $this->withExceptionHandling();
 
-        // And a guest posts a new thread to the endpoint
-        $this->post(route('threads.store', $thread->toArray()));
+        $this->get(route('threads.create'))
+            ->assertRedirect('/login');
+
+        $this->post(route('threads.store'))
+            ->assertRedirect('/login');
+
     }
 
     /** @test */
