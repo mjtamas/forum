@@ -26,3 +26,5 @@ Route::post('/threads','ThreadsController@store')->name('threads.store');
 Route::get('/threads/{thread}','ThreadsController@show')->name('threads.show');
 Route::get('/threads/{thread}/edit','ThreadsController@edit')->name('threads.edit');
 Route::put('/threads/{thread}', 'ThreadsController@update')->name('threads.update');
+
+Route::post('/threads/{thread}/replies', 'RepliesController@store')->name('replies.store');
