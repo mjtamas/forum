@@ -22,7 +22,12 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::resource('threads','ThreadsController');
 
+Route::get('/threads/create', 'ThreadsController@create')->name('threads.create');
+Route::get('/threads','ThreadsController@index')->name('threads.index');
+Route::post('/threads','ThreadsController@store')->name('threads.store');
+Route::get('/threads/{channel:slug}/{thread}','ThreadsController@show')->name('threads.show');
+Route::get('/threads/{thread}/edit','ThreadsController@edit')->name('threads.edit');
+Route::put('/threads/{thread}', 'ThreadsController@update')->name('threads.update');
 
 Route::post('/threads/{thread}/replies', 'RepliesController@store')->name('replies.store');

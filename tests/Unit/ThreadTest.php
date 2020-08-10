@@ -22,20 +22,18 @@ class ThreadTest extends TestCase
         $this->thread = factory(\App\Thread::class)->create();
     }
 
-   /** @test */
-    public function a_thread_has_replies()
-    {
-
-
-        $this->assertInstanceOf(Collection::class, $this->thread->replies);
-
-    }
-
     /** @test */
     public function a_thread_has_a_creator()
     {
         $this->assertInstanceOf(\App\User::class,$this->thread->creator);
     }
+
+   /** @test */
+    public function a_thread_has_replies()
+    {
+        $this->assertInstanceOf(Collection::class, $this->thread->replies);
+    }
+
 
     /** @test */
     public function a_thread_can_add_a_reply()
@@ -46,6 +44,13 @@ class ThreadTest extends TestCase
         ]);
 
         $this->assertCount(1,$this->thread->replies);
+    }
+
+    /** @test */
+    public function a_thread_belongs_to_a_channel()
+    {
+        $thread = create(\App\Thread::class);
+        $this->assertInstanceOf(\App\Channel::class , $thread->channel);
     }
 
 }

@@ -17,10 +17,24 @@ class Thread extends Model
         return $this->hasMany(Reply::class);
     }
 
+    /** A thread belongs to a creator
+     *
+     *
+     */
     public function creator()
     {
         return $this->belongsTo(User::class,'user_id');
     }
+
+    /** A thread belongs to a channel
+     *
+     *
+     */
+
+     public function channel()
+     {
+         return $this->belongsTo(Channel::class);
+     }
 
     public function addReply($reply)
     {

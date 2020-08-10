@@ -45,12 +45,14 @@ class CreateThreadsTest extends TestCase
         $this->post(route('threads.store', $thread->toArray()));
 
         // And when we visit the thread page
-        $response = $this->get($thread->path());
+        die($this->get(route('threads.show',[$thread->channel->slug,$thread->id])));
 
-        // Then we should see the new thread's title and body
-        $response
-            ->assertSee($thread->title)
-            ->assertSee($thread->body);
+
+
+        // // Then we should see the new thread's title and body
+        // $response
+        //     ->assertSee($thread->title)
+        //     ->assertSee($thread->body);
     }
 
 
