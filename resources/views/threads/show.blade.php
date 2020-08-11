@@ -30,7 +30,7 @@
         @auth
             <div class="row justify-content-center">
                 <div class="col-md-8">
-                    <form method="POST" action="{{ route('replies.store',$thread) }}">
+                    <form method="POST" action="{{ route('replies.store',[$thread->channel,$thread]) }}">
                         @csrf
                         <div class="form-group">
                             <textarea name="body" id="body"  class="form-control" placeholder="What's in your mind?" rows="5"></textarea>
