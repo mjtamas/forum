@@ -36,7 +36,7 @@ class CreateThreadsTest extends TestCase
 
         $thread = create(\App\Thread::class);
 
-        $this->post('/threads',$thread->toArray());
+        $response = $this->post('/threads',$thread->toArray());
 
         $this->get(route('threads.show',[$thread->channel->slug,$thread->id]))
             ->assertSee($thread->title)
@@ -44,5 +44,38 @@ class CreateThreadsTest extends TestCase
 
     }
 
+    /** @test */
+    public function a_thread_requires_a_title()
+    {
+        $this->publishThread(['title' => null])
+            ->assertSessionHasErrors('title');
+    }
+
+    /** @test */
+    public function a_thread_requires_a_body()
+    {
+        $this->publishThread(['body' => null])
+            ->assertSessionHasErrors('body');
+    }
+
+    /** @test */
+    public function a_thread_requires_a_valid_channel()
+    {
+        factory(\App\Channel::class,2)->create();
+
+        $this->publishThread(['channel_id' => null])
+            ->assertSessionHasErrors('channel_id');
+
+        $this->publishThread(['channel_id' => 999])
+            ->assertSessionHasErrors('channel_id');
+    }
+
+    public function publishThread($overrides = [])
+    {
+        $this->signIn();
+        $thread = make(\App\Thread::class, $overrides);
+
+        return $this->post('/threads', $thread->toArray());
+    }
 
 }

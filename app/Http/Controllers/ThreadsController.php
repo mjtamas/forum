@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Channel;
+use App\Filters\ThreadFilters;
 use App\Thread;
 use Illuminate\Http\Request;
 
@@ -16,15 +17,18 @@ class ThreadsController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Channel $channel
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Channel $channel, ThreadFilters $filters)
     {
-        $threads = Thread::latest()->get();
+        $threads =$this->getThreads($channel,$filters);
 
         return view('threads.index',compact('threads'));
 
     }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -44,6 +48,12 @@ class ThreadsController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'title' => 'required',
+            'body' => 'required',
+            'channel_id' => 'required|exists:channels,id'
+        ]);
+
         $thread = Thread::create([
             'user_id' => auth()->id(),
             'channel_id' => request('channel_id'),
@@ -51,7 +61,7 @@ class ThreadsController extends Controller
             'body' =>request('body')
         ]);
 
-        return redirect(route('threads.show',$thread));
+        return redirect(route('threads.show',[$thread->channel,$thread]));
     }
 
     /**
@@ -98,5 +108,17 @@ class ThreadsController extends Controller
     public function destroy(Thread $thread)
     {
         //
+    }
+
+    protected function getThreads(Channel $channel, ThreadFilters $filters)
+    {
+        $threads = Thread::filter($filters);
+
+        if ($channel->exists) {
+            $threads->whereChannelId($channel->id);
+        }
+
+
+        return $threads->latest()->get();
     }
 }

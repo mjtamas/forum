@@ -30,4 +30,6 @@ Route::get('/threads/{channel:slug}/{thread}','ThreadsController@show')->name('t
 Route::get('/threads/{thread}/edit','ThreadsController@edit')->name('threads.edit');
 Route::put('/threads/{thread}', 'ThreadsController@update')->name('threads.update');
 
+Route::get('threads/{channel:slug}', 'ThreadsController@index');
+
 Route::post('/threads/{channel:slug}/{thread}/replies', 'RepliesController@store')->name('replies.store');

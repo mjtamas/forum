@@ -36,7 +36,7 @@
                             <textarea name="body" id="body"  class="form-control" placeholder="What's in your mind?" rows="5"></textarea>
                         </div>
 
-                        <button type="submit" class="btn btn-default">Post</button>
+                        <button type="submit" class="btn btn-primary">Post</button>
                     </form>
                 </div>
             </div>
