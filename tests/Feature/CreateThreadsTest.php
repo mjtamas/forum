@@ -70,6 +70,32 @@ class CreateThreadsTest extends TestCase
             ->assertSessionHasErrors('channel_id');
     }
 
+    /** @test */
+    public function guests_cannot_delete_threads()
+    {
+        $thread = create(\App\Thread::class);
+
+        $response = $this->delete(route('threads.show',[$thread->channel->slug,$thread->id]) );
+        $response->assertRedirect('/login');
+
+    }
+
+    /** @test */
+    public function a_thread_can_be_deleted()
+    {
+        $this->signIn();
+
+        $thread = create(\App\Thread::class);
+        $reply = create(\App\Reply::class,['thread_id' => $thread->id]);
+
+
+        $this->json('DELETE',route('threads.show',[$thread->channel->slug,$thread->id]) );
+
+        $this->assertDatabaseMissing('threads',['id' => $thread->id]);
+        $this->assertDatabaseMissing('replies',['id' => $reply->id]);
+
+    }
+
     public function publishThread($overrides = [])
     {
         $this->signIn();

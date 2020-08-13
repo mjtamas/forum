@@ -6,8 +6,19 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header" style="background-color: rgb(105, 162, 214)">
+                        <div class="level">
+                            <span class="flex">
+                                {{ $thread->title }}
+                            </span>
+                        <form action="{{route('threads.show',[$thread->channel->slug,$thread->id])}}" method="POST">
+                        @csrf
+                        {{method_field('DELETE')}}
 
-                        {{ $thread->title }}
+                        <button type="submit" class="btn btn-link">Delete Thread</button>
+                        </form>
+
+                        </div>
+
                     </div>
 
                     <div class="card-body">
