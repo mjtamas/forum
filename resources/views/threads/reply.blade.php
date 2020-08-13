@@ -2,7 +2,7 @@
     <div class="card-header">
         <div class="level">
             <h5 class="flex">
-                <a href="#">
+                <a href="{{route('profiles.show',$reply->owner)}}">
                     {{ $reply->owner->name }}
                 </a>
                 said

@@ -4,27 +4,27 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">{{ __('Forum Threads') }}</div>
-
-                    <div class="card-body">
-                        @foreach ($threads as $thread)
-                            <article>
-                                <div class="level">
+                @foreach ($threads as $thread)
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="level">
                                 <h4 class="flex">
-                                    <a href="{{ route('threads.show',[$thread->channel->slug,$thread->id]) }}">{{ $thread->title }}</a>
+                                    <a
+                                        href="{{ route('threads.show', [$thread->channel->slug, $thread->id]) }}">{{ $thread->title }}</a>
 
-                                </h4 >
-                            <a href=" {{route('threads.show',[$thread->channel,$thread])}}">{{$thread->replies_count }} {{str_plural('reply',$thread->replies_count)}}</a>
-                                </div>
-                                <div class="body">
-                                    {{ $thread->body }}
-                                </div>
-                            </article>
-                            <hr>
-                        @endforeach
+                                </h4>
+                                <a href=" {{ route('threads.show', [$thread->channel, $thread]) }}">{{ $thread->replies_count }}
+                                    {{ str_plural('reply', $thread->replies_count) }}</a>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="body">
+                                {{ $thread->body }}
+                            </div>
+                        </div>
                     </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </div>
