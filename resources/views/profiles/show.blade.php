@@ -13,7 +13,8 @@
             <div class="card">
                 <div class="card-header" style="background-color: rgb(105, 162, 214)">
 
-                    {{ $thread->title }}
+                    <a href="{{ route('threads.show', [$thread->channel->slug, $thread->id]) }}">{{ $thread->title }}</a>
+
                 </div>
 
                 <div class="card-body">

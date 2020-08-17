@@ -4,13 +4,12 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                @foreach ($threads as $thread)
+                @forelse ($threads as $thread)
                     <div class="card">
                         <div class="card-header">
                             <div class="level">
                                 <h4 class="flex">
-                                    <a
-                                        href="{{ route('threads.show', [$thread->channel->slug, $thread->id]) }}">{{ $thread->title }}</a>
+                                    <a href="{{ route('threads.show', [$thread->channel->slug, $thread->id]) }}">{{ $thread->title }}</a>
 
                                 </h4>
                                 <a href=" {{ route('threads.show', [$thread->channel, $thread]) }}">{{ $thread->replies_count }}
@@ -24,7 +23,9 @@
                             </div>
                         </div>
                     </div>
-                @endforeach
+                @empty
+                    <p>There are no relevant threads in this channel.</p>
+                @endforelse
             </div>
         </div>
     </div>

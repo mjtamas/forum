@@ -71,23 +71,29 @@ class CreateThreadsTest extends TestCase
     }
 
     /** @test */
-    public function guests_cannot_delete_threads()
+    public function unauthorized_users_cannot_delete_threads()
     {
         $thread = create(\App\Thread::class);
 
-        $response = $this->delete(route('threads.show',[$thread->channel->slug,$thread->id]) );
-        $response->assertRedirect('/login');
+        $this->delete(route('threads.show',[$thread->channel->slug,$thread->id]) )
+            ->assertRedirect('/login');
+
+        $this->signIn();
+        $this->delete(route('threads.show',[$thread->channel->slug,$thread->id]) )
+            ->assertStatus(403);
 
     }
 
     /** @test */
-    public function a_thread_can_be_deleted()
+    public function authorized_users_can_delete_threads()
     {
         $this->signIn();
 
-        $thread = create(\App\Thread::class);
+        $thread = create(\App\Thread::class,['user_id' => auth()->id()]);
         $reply = create(\App\Reply::class,['thread_id' => $thread->id]);
 
+        $response = $this->json('DELETE', route('threads.show',[$thread->channel->slug,$thread->id]));
+        $response->assertStatus(204);
 
         $this->json('DELETE',route('threads.show',[$thread->channel->slug,$thread->id]) );
 
@@ -95,6 +101,8 @@ class CreateThreadsTest extends TestCase
         $this->assertDatabaseMissing('replies',['id' => $reply->id]);
 
     }
+
+
 
     public function publishThread($overrides = [])
     {

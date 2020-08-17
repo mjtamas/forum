@@ -10,13 +10,16 @@
                             <span class="flex">
                                 {{ $thread->title }}
                             </span>
-                        <form action="{{route('threads.show',[$thread->channel->slug,$thread->id])}}" method="POST">
-                        @csrf
-                        {{method_field('DELETE')}}
+                            @can('update', $thread)
 
-                        <button type="submit" class="btn btn-link">Delete Thread</button>
-                        </form>
 
+                                <form action="{{ route('threads.show', [$thread->channel->slug, $thread->id]) }}" method="POST">
+                                    @csrf
+                                    {{ method_field('DELETE') }}
+
+                                    <button type="submit" class="btn btn-link">Delete Thread</button>
+                                </form>
+                            @endcan
                         </div>
 
                     </div>
@@ -33,7 +36,7 @@
                     @include ('threads.reply')
                 @endforeach
 
-                {{$replies->links()}}
+                {{ $replies->links() }}
 
                 @auth
                     <form method="POST" action="{{ route('replies.store', [$thread->channel, $thread]) }}">
@@ -57,8 +60,9 @@
                     <div class="card-body">
                         <p>
                             This thread was published {{ $thread->created_at->diffForHumans() }} by
-                            <a href="{{route('profiles.show',$thread->creator)}}">{{ $thread->creator->name }}</a> and currently has
-                            {{ $thread->replies_count }} {{str_plural('comment', $thread->replies_count)}}.
+                            <a href="{{ route('profiles.show', $thread->creator) }}">{{ $thread->creator->name }}</a> and
+                            currently has
+                            {{ $thread->replies_count }} {{ str_plural('comment', $thread->replies_count) }}.
                         </p>
                     </div>
                 </div>
